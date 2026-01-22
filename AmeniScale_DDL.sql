@@ -28,23 +28,23 @@ CREATE TABLE tbl_Example
 	StatusString VARCHAR(MAX) NOT NULL,
 );
 
-CREATE TABLE AmenityCategories (
+CREATE TABLE Tbl_AmenityCategories (
     CategoryID INT PRIMARY KEY IDENTITY(1,1),
     CategoryName NVARCHAR(100) NOT NULL,
     BaseWeight DECIMAL(5,2),
     IsNegative BIT DEFAULT 0
 );
 
-CREATE TABLE Amenities (
+CREATE TABLE Tbl_Amenities (
     AmenityID INT PRIMARY KEY IDENTITY(1,1),
-    Name NVARCHAR(255) NULL,
+    Name NVARCHAR(255) NOT NULL,
     CategoryID INT FOREIGN KEY REFERENCES AmenityCategories(CategoryID),
     Latitude DECIMAL(10,8),
     Longitude DECIMAL(11,8),
     Location GEOGRAPHY
 );
 
-CREATE TABLE Locations (
+CREATE TABLE Tbl_Locations (
     LocationID INT PRIMARY KEY IDENTITY(1,1),
     Address NVARCHAR(500),
     Latitude DECIMAL(10,8),
@@ -53,10 +53,9 @@ CREATE TABLE Locations (
     CalculatedScore DECIMAL(5,2)
 );
 
-CREATE TABLE ScoringResults (
+CREATE TABLE Tbl_ScoringResults (
     ResultID INT PRIMARY KEY IDENTITY(1,1),
     LocationID INT FOREIGN KEY REFERENCES Locations(LocationID),
-    AmenityID INT FOREIGN KEY REFERENCES Amenities(AmenityID),
     Distance DECIMAL(10,2),
     ContributionScore DECIMAL(5,2),
     CalculatedDate DATETIME DEFAULT GETDATE()
