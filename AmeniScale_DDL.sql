@@ -11,18 +11,19 @@ vers     Date                    Coder			Issue
 
 USE master
 GO
-
 IF EXISTS(SELECT * FROM sys.databases WHERE name='DB_AmeniScale')
-BEGIN
-    ALTER DATABASE DB_AmeniScale SET SINGLE_USER WITH ROLLBACK IMMEDIATE
-    DROP DATABASE DB_AmeniScale
-END
-GO
+DROP DATABASE DB_AmeniScale
 
 CREATE DATABASE DB_AmeniScale
 GO
 USE DB_AmeniScale
-GO
+
+
+CREATE TABLE tbl_Example
+(
+	ID INT PRIMARY KEY IDENTITY(1,1),
+	StatusString VARCHAR(MAX) NOT NULL,
+);
 
 CREATE TABLE Tbl_Countries (
     CountryID INT PRIMARY KEY IDENTITY(1,1),
@@ -47,7 +48,7 @@ CREATE TABLE Tbl_AmenityCategories (
 
 CREATE TABLE Tbl_Amenities (
     AmenityID INT PRIMARY KEY IDENTITY(1,1),
-    Name NVARCHAR(255) NOT NULL,
+    Name NVARCHAR(255),
     CategoryID INT FOREIGN KEY REFERENCES Tbl_AmenityCategories(CategoryID),
     Street NVARCHAR(255),
     City NVARCHAR(100),
@@ -74,7 +75,6 @@ CREATE TABLE Tbl_Locations (
 CREATE TABLE Tbl_ScoringResults (
     ResultID INT PRIMARY KEY IDENTITY(1,1),
     LocationID INT FOREIGN KEY REFERENCES Tbl_Locations(LocationID),
-    -- Removed AmenityID in favor of using proxy later
     Distance DECIMAL(10,2),
     ContributionScore DECIMAL(5,2),
     CalculatedDate DATETIME DEFAULT GETDATE()
