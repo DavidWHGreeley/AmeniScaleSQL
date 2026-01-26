@@ -4,8 +4,8 @@ Coder: Greeley
 Date: 2026-01-12
 
 vers     Date                    Coder			Issue
-1.0      2026-01-12              Greeley		Initial
-1.1      2026-01-22              Greeley        Initial
+1.0      2026-01-12              Greeley		Initial restaurants
+1.1      2026-01-22              Patrick        Inserted a list of data. 
 */
 
 USE master
@@ -13,15 +13,6 @@ GO
 
 USE DB_AmeniScale
 GO
-
-INSERT INTO tbl_Example
-(
-	StatusString
-) 
-VALUES 
-(
-	'Hello from the database'
-)
 
 SET NOCOUNT ON;
 BEGIN TRY
@@ -189,7 +180,7 @@ BEGIN TRY
         ('restaurant', 'Wong''s Garden Restaurant', 'Kingston', NULL, NULL, NULL, 'Ontario', 44.262747, -76.4912843),
         ('restaurant', 'Starbucks', 'Kingston', '109', 'Division Street', NULL, 'Ontario', 44.2315048, -76.4926158),
         ('restaurant', 'The Merchant Tap House', 'Kingston', '6', 'Princess Street', NULL, 'Ontario', 44.2308827, -76.4789081),
-        ('restaurant', 'MC²', 'Kingston', '68', 'University Avenue', NULL, 'Ontario', 44.2269242, -76.497176),
+        ('restaurant', 'MC', 'Kingston', '68', 'University Avenue', NULL, 'Ontario', 44.2269242, -76.497176),
         ('restaurant', 'Wally''s', 'Kingston', '18', 'Stuart Street', NULL, 'Ontario', 44.2245097, -76.4916664),
         ('restaurant', 'Peter''s Place', 'Kingston', '34', 'Princess Street', NULL, 'Ontario', 44.231044, -76.4798981),
         ('restaurant', 'Morrison''s Restaurant', 'Kingston', '318', 'King Street East', 'K7L 2Z3', 'Ontario', 44.2300884, -76.4817072),
@@ -202,7 +193,7 @@ BEGIN TRY
         ('restaurant', 'Popeyes', 'Kingston', NULL, NULL, NULL, 'Ontario', 44.2426175, -76.5160736),
         ('restaurant', 'restaurantBurrito', 'Kingston', NULL, NULL, NULL, 'Ontario', 44.2425653, -76.5159505),
         ('restaurant', 'The Grad Club', 'Kingston', NULL, NULL, NULL, 'Ontario', 44.2277832, -76.4911038),
-        ('restaurant', 'Grabbies Bistro Café', 'Kingston', NULL, NULL, NULL, 'Ontario', 44.2295525, -76.4927812),
+        ('restaurant', 'Grabbies Bistro Caf', 'Kingston', NULL, NULL, NULL, 'Ontario', 44.2295525, -76.4927812),
         ('restaurant', 'Little Caesars', 'Kingston', '507', 'Princess Street', 'K7L 1C6', 'Ontario', 44.235281, -76.4965507),
         ('restaurant', 'Firehouse Subs', 'Kingston', NULL, NULL, NULL, 'Ontario', 44.2427582, -76.5160519),
         ('restaurant', 'Grecos', 'Kingston', NULL, NULL, NULL, 'Ontario', 44.2320249, -76.4846452),
@@ -235,7 +226,7 @@ BEGIN TRY
         ('restaurant', 'Taj Curry House', 'Kingston', NULL, NULL, NULL, 'Ontario', 44.2318083, -76.4832056),
         ('restaurant', 'Harper''s Burger restaurant', 'Kingston', '93', 'Princess Street', 'K7L 1A6', 'Ontario', 44.2316523, -76.4821737),
         ('restaurant', 'Coffee & Company', 'Kingston', '53', 'Princess Street', NULL, 'Ontario', 44.2314331, -76.480744),
-        ('restaurant', 'Café Church', 'Kingston', NULL, NULL, NULL, 'Ontario', 44.2313142, -76.4791449),
+        ('restaurant', 'Caf Church', 'Kingston', NULL, NULL, NULL, 'Ontario', 44.2313142, -76.4791449),
         ('restaurant', 'Union Italian Kitchen & restaurant', 'Kingston', '182', 'Princess Street', NULL, 'Ontario', 44.2319131, -76.4853741),
         ('restaurant', 'Curry Original', 'Kingston', NULL, NULL, NULL, 'Ontario', 44.2291362, -76.4857826),
         ('restaurant', NULL, 'Kingston', NULL, NULL, NULL, 'Ontario', 44.2290561, -76.4948075),
@@ -258,7 +249,7 @@ BEGIN TRY
         ('restaurant', 'Pizza Pizza', 'Kingston', '68', 'University Avenue', NULL, 'Ontario', 44.2269862, -76.497031),
         ('restaurant', 'The Library restaurant', 'Kingston', '101', 'Union Street', NULL, 'Ontario', 44.2282256, -76.4958534),
         ('restaurant', 'Tim Hortons', 'Kingston', '116', 'restaurantrie Street', NULL, 'Ontario', 44.2261252, -76.4913747),
-        ('restaurant', 'Thaï Express', 'Kingston', '599', 'Taylor Kidd Boulevard', NULL, 'Ontario', 44.2504033, -76.5674996),
+        ('restaurant', 'Tha Express', 'Kingston', '599', 'Taylor Kidd Boulevard', NULL, 'Ontario', 44.2504033, -76.5674996),
         ('restaurant', 'Starbucks', 'Kingston', '599', 'Taylor Kidd Boulevard', NULL, 'Ontario', 44.2504086, -76.5671785),
         ('restaurant', 'East Side Village Restaurant', 'Kingston', NULL, NULL, NULL, 'Ontario', 44.2421981, -76.4960911),
         ('restaurant', 'Booster Juice', 'Kingston', '945', 'Gardiners Road', NULL, 'Ontario', 44.256166, -76.5722936),
@@ -270,7 +261,7 @@ BEGIN TRY
         ('restaurant', 'Orange Julius', 'Kingston', '945', 'Gardiners Road', 'K7M 7H4', 'Ontario', 44.2557985, -76.571411),
         ('restaurant', 'A&W', 'Kingston', '945', 'Gardiners Road', NULL, 'Ontario', 44.2557847, -76.5714756),
         ('restaurant', 'Cultures', 'Kingston', '945', 'Gardiners Road', NULL, 'Ontario', 44.2557708, -76.5715402),
-        ('restaurant', 'Thaï Express', 'Kingston', '945', 'Gardiners Road', NULL, 'Ontario', 44.255757, -76.5716048),
+        ('restaurant', 'Thai Express', 'Kingston', '945', 'Gardiners Road', NULL, 'Ontario', 44.255757, -76.5716048),
         ('restaurant', 'New York Fries', 'Kingston', '945', 'Gardiners Road', NULL, 'Ontario', 44.2561214, -76.5715976),
         ('restaurant', NULL, 'Kingston', NULL, NULL, NULL, 'Ontario', 44.2600736, -76.5060004),
         ('restaurant', 'Royal Angkor Restaurant', 'Kingston', '523', 'Princess Street', 'K7L 1C6', 'Ontario', 44.2352052, -76.4969301),
@@ -304,7 +295,7 @@ BEGIN TRY
         ('restaurant', 'Fat Bastard Burrito', 'Kingston', '225', 'Gore Road', NULL, 'Ontario', 44.2581965, -76.4572522),
         ('restaurant', 'Big Bob''s Classic Pizza and Pasta', 'Kingston', '235', 'Gore Road', NULL, 'Ontario', 44.2583272, -76.4555307),
         ('restaurant', 'Mike Mundell''s Surf & Turf Stores', 'Kingston', '235', 'Gore Road', NULL, 'Ontario', 44.2586643, -76.45559),
-        ('restaurant', 'Columbus Café & Co', 'Kingston', '297', 'Princess Street', NULL, 'Ontario', 44.232686, -76.4888307),
+        ('restaurant', 'Columbus Cafe & Co', 'Kingston', '297', 'Princess Street', NULL, 'Ontario', 44.232686, -76.4888307),
         ('restaurant', 'Division Fish & Chips', 'Kingston', NULL, NULL, NULL, 'Ontario', 44.238906, -76.494117),
         ('restaurant', 'Smoke''s Poutinerie', 'Kingston', NULL, NULL, NULL, 'Ontario', 44.233852, -76.4929693),
         ('restaurant', 'Gino''s Pizza', 'Kingston', NULL, NULL, NULL, 'Ontario', 44.2422312, -76.4956781),
@@ -316,7 +307,7 @@ BEGIN TRY
     INSERT INTO @srcAmenities (CategoryName, Name, City, HouseNumber, StreetName, PostalCode, Province, Latitude, Longitude)
     VALUES
         ('restaurant', 'FryWay', 'Kingston', '21', 'Stuart Street', NULL, 'Ontario', 44.2247778, -76.4922871),
-        ('restaurant', 'Tahini’s', 'Kingston', '320', 'Princess Street', 'K7L 1A5', 'Ontario', 44.2325623, -76.4895034),
+        ('restaurant', 'Tahini''s', 'Kingston', '320', 'Princess Street', 'K7L 1A5', 'Ontario', 44.2325623, -76.4895034),
         ('restaurant', 'Pat''s Restaurant', 'Kingston', '455', 'Princess Street', NULL, 'Ontario', 44.2342219, -76.4942058),
         ('restaurant', 'Saigon Delights', 'Kingston', '217', 'Division Street', NULL, 'Ontario', 44.2345394, -76.4931313),
         ('restaurant', 'VIP Chinese Restaurant', 'Kingston', '528', 'Princess Street', 'K7L 1C5', 'Ontario', 44.2349865, -76.4971833),
@@ -428,7 +419,7 @@ BEGIN TRY
         ('restaurant', 'Flip It!', 'Kingston', '68', 'University Avenue', NULL, 'Ontario', 44.2267144, -76.4970704),
         ('restaurant', 'Dough Box', 'Kingston', '347', 'Princess Street', NULL, 'Ontario', 44.2328696, -76.4901533),
         ('restaurant', 'Mucho Burrito', 'Kingston', NULL, NULL, NULL, 'Ontario', 44.2328459, -76.49228),
-        ('restaurant', 'Thaï Express', 'Kingston', NULL, NULL, NULL, 'Ontario', 44.2327381, -76.4923127),
+        ('restaurant', 'Thai Express', 'Kingston', NULL, NULL, NULL, 'Ontario', 44.2327381, -76.4923127),
         ('restaurant', 'KSC Shawarma Curries', 'Kingston', '1046', 'Princess Street', 'K7L 1H2', 'Ontario', 44.242783, -76.5161073),
         ('restaurant', 'Namaste Kingston', 'Kingston', '178', 'Ontario Street', 'K7L 2Y8', 'Ontario', 44.2286484, -76.4814092),
         ('restaurant', 'BBQ BABES', 'Kingston', '1040', 'Division Street', NULL, 'Ontario', 44.262906, -76.5001235),
@@ -469,12 +460,12 @@ BEGIN TRY
         ('restaurant', 'Mary Brown''s', 'Kingston', '656', 'Gardiners Road', NULL, 'Ontario', 44.2461884, -76.5664671),
         ('restaurant', 'Eat Up Canada', 'Kingston', '764', 'Gardiners Road', NULL, 'Ontario', 44.2488803, -76.5676704),
         ('restaurant', 'Firehouse Subs', 'Kingston', '770', 'Gardiners Road', NULL, 'Ontario', 44.248951, -76.5665661),
-        ('restaurant', 'Kai’s Delight', 'Kingston', '680', 'King Street West', NULL, 'Ontario', 44.2206855, -76.5192725),
+        ('restaurant', 'Kai''s Delight', 'Kingston', '680', 'King Street West', NULL, 'Ontario', 44.2206855, -76.5192725),
         ('restaurant', 'Molson Canadian Brew House', 'Kingston', NULL, NULL, NULL, 'Ontario', 44.233088, -76.4790911),
-        ('restaurant', 'Smoke ‘N restaurantrel', 'Kingston', NULL, NULL, NULL, 'Ontario', 44.2734694, -76.5690416),
+        ('restaurant', 'Smoke ''N restaurantrel', 'Kingston', NULL, NULL, NULL, 'Ontario', 44.2734694, -76.5690416),
         ('restaurant', 'Pho Kingston', 'Kingston', NULL, NULL, NULL, 'Ontario', 44.2734786, -76.5685893),
         ('restaurant', 'Pita Pit', 'Kingston', NULL, NULL, NULL, 'Ontario', 44.2734882, -76.5688242),
-        ('restaurant', 'Carmelinda’s Family Restaurant', 'Kingston', NULL, NULL, NULL, 'Ontario', 44.2590764, -76.5821475),
+        ('restaurant', 'Carmelinda''s Family Restaurant', 'Kingston', NULL, NULL, NULL, 'Ontario', 44.2590764, -76.5821475),
         ('restaurant', NULL, 'Kingston', NULL, NULL, NULL, 'Ontario', 44.2298023, -76.460243),
         ('restaurant', 'Gong Cha', 'Kingston', '217', 'Princess Street', NULL, 'Ontario', 44.232334, -76.4863466),
         ('restaurant', 'K-House', 'Kingston', '127', 'Ontario Street', 'K7L 5L3', 'Ontario', 44.228197, -76.4814132),
@@ -510,7 +501,7 @@ BEGIN TRY
         ('restaurant', 'Sens restaurant', 'Kingston', '136', 'Ontario Street', 'K7L 2Y4', 'Ontario', 44.2274702, -76.4824891),
         ('restaurant', 'Mermaid Avenue Sandwich Factory', 'Kingston', '236', 'Wellington Street', NULL, 'Ontario', 44.2329553, -76.4821794),
         ('restaurant', 'Minos Take Out', 'Kingston', '224', 'Wellington Street', NULL, 'Ontario', 44.2326377, -76.4822638),
-        ('restaurant', 'Kino’s Sushi and Asian Cuisines', 'Kingston', '1730', 'Bath Road', NULL, 'Ontario', 44.2381528, -76.573435),
+        ('restaurant', 'Kino''s Sushi and Asian Cuisines', 'Kingston', '1730', 'Bath Road', NULL, 'Ontario', 44.2381528, -76.573435),
         ('restaurant', 'Domino''s', 'Kingston', '331', 'Bath Road', 'K7M 2X6', 'Ontario', 44.2402005, -76.5275058),
         ('restaurant', 'Naan Stop Express', 'Kingston', '331', 'Bath Road', 'K7M2X6', 'Ontario', 44.2402095, -76.5274074),
         ('restaurant', 'Costco Food Court', 'Kingston', NULL, NULL, NULL, 'Ontario', 44.2605889, -76.5601515),
@@ -524,7 +515,7 @@ BEGIN TRY
         ('restaurant', 'The Brew', 'Kingston', NULL, NULL, NULL, 'Ontario', 44.2287474, -76.4952586),
         ('restaurant', 'Bento Sushi', 'Kingston', NULL, NULL, NULL, 'Ontario', 44.2287251, -76.4952096),
         ('restaurant', 'Trinity Social', 'Kingston', NULL, NULL, NULL, 'Ontario', 44.2333821, -76.493182),
-        ('restaurant', 'Philthy Philly’s', 'Kingston', NULL, NULL, NULL, 'Ontario', 44.2326508, -76.4929985),
+        ('restaurant', 'Philthy Philly''s', 'Kingston', NULL, NULL, NULL, 'Ontario', 44.2326508, -76.4929985),
         ('restaurant', 'Kami Sushi', 'Kingston', NULL, NULL, NULL, 'Ontario', 44.2641215, -76.5753328),
         ('restaurant', 'Kebab 44', 'Kingston', NULL, NULL, NULL, 'Ontario', 44.2641248, -76.5750249),
         ('restaurant', 'Subway', 'Kingston', NULL, NULL, NULL, 'Ontario', 44.2601228, -76.5824747);
@@ -619,12 +610,12 @@ BEGIN TRY
         ('supermarket','J&amp;K Supermarket',NULL,NULL,NULL,'Ontario','Kingston',-76.4904426,44.2327009),
         ('convenience','Cochrane''s Convenience',NULL,NULL,NULL,'Ontario','Kingston',-76.4839942,44.235953),
         ('convenience','Neighbours Coffee',NULL,NULL,NULL,'Ontario','Kingston',-76.5556541,44.2493401),
-        ('supermarket','Quattrocchi’s',NULL,NULL,NULL,'Ontario','Kingston',-76.4867278,44.2487947),
+        ('supermarket','Quattrocchi''s',NULL,NULL,NULL,'Ontario','Kingston',-76.4867278,44.2487947),
         ('convenience','Mclaughlin Foods','404','Nelson Street',NULL,'Ontario','Kingston',-76.5027988,44.2430343),
         ('supermarket','Conveniently Convenient','652','Princess Street',NULL,'Ontario','Kingston',-76.5024929,44.2371269),
         ('convenience','Family News Stand',NULL,NULL,NULL,'Ontario','Kingston',-76.5702443,44.2366359),
         ('supermarket','Sigrid''s Natural Foods',NULL,NULL,NULL,'Ontario','Kingston',-76.5702872,44.2363063),
-        ('supermarket','John’s',NULL,NULL,NULL,'Ontario','Kingston',-76.4968718,44.2351799),
+        ('supermarket','John''s',NULL,NULL,NULL,'Ontario','Kingston',-76.4968718,44.2351799),
         ('convenience','Sun Convenience',NULL,NULL,NULL,'Ontario','Kingston',-76.4836271,44.2567879),
         ('supermarket','Patel Indian',NULL,NULL,NULL,'Ontario','Kingston',-76.5312041,44.2498779),
         ('grocery','K Asian Supermarket','274','Princess Street',NULL,'Ontario','Kingston',-76.4881509,44.232348),
@@ -720,7 +711,7 @@ BEGIN TRY
         ('LightHouse Dental','1716','K7M 4Y2','Bath Road','dentist',-76.5720962,44.2377416,'Kingston','Ontario'),
         ('Hedgewood House Dental','169',NULL,'Union Street','dentist',-76.5001575,44.2275078,'Kingston','Ontario'),
         ('Dr. Don Anderson, Dr. Scott Anderson, Dr. Terry Devitt','377',NULL,'King Street East','dentist',-76.4821518,44.2290469,'Kingston','Ontario'),
-        ('King’s Town Dental',NULL,NULL,NULL,'dentist',-76.583095,44.2591351,'Kingston','Ontario'),
+        ('King''s Town Dental',NULL,NULL,NULL,'dentist',-76.583095,44.2591351,'Kingston','Ontario'),
         ('East Side Vetrinary Servies','96',NULL,'Innovation Drive','veterinary',-76.4457756,44.272516,'Kingston','Ontario'),
         ('Dr. Timothy R. Agapas, Orthodontist','760',NULL,'Highway 15','dentist',-76.4612033,44.2523222,'Kingston','Ontario'),
         ('Harbour Dental',NULL,NULL,NULL,'dentist',-76.4815754,44.2275049,'Kingston','Ontario'),
@@ -931,7 +922,7 @@ BEGIN TRY
         (-76.484219,44.2369005,'St. Michael the Archangel Ukrainian Catholic Church','Kingston',NULL,NULL,'Ontario',NULL,'place_of_worship'),
         (-76.4894675,44.2330095,'St. Andrew''s Presbyterian Church','Kingston','130',NULL,'Ontario','Princess Street','place_of_worship'),
         (-76.5023195,44.2378175,'St Luke''s Anglican Church','Kingston','236','K7K 4M7','Ontario','Nelson Street','place_of_worship'),
-        (-76.4995385,44.236754,'St. François d''Assise','Kingston','512','K7K 4M1','Ontario','Frontenac Street','place_of_worship'),
+        (-76.4995385,44.236754,'St. FranÃ§ois d''Assise','Kingston','512','K7K 4M1','Ontario','Frontenac Street','place_of_worship'),
         (-76.4945225,44.2294817,'TD Canada Trust','Kingston',NULL,NULL,'Ontario',NULL,'atm'),
         (-76.5709387,44.256784,'BMO','Kingston','945',NULL,'Ontario','Gardiners Road','bank'),
         (-76.5224524,44.249724,'Kingston Unitarian Fellowship','Kingston','244','K7M 3H2','Ontario','McMahon Avenue','place_of_worship'),
@@ -1703,7 +1694,7 @@ BEGIN TRY
         ('Taylor-Kidd Boulevard (south side of Princess)','bus_stop','Kingston','Ontario',-76.54166000025265,44.25651999787861),
         ('Loyalist Avenue (east side of Fairfield)','bus_stop','Kingston','Ontario',-76.6369199994175,44.2214199981881),
         ('Norris Court (east side of Gardiners)','bus_stop','Kingston','Ontario',-76.56861999960778,44.26310999785228),
-        ('École Secondaire Catholique Marie-Rivier','bus_stop','Kingston','Ontario',-76.52215000083994,44.26923999853616),
+        ('cole Secondaire Catholique Marie-Rivier','bus_stop','Kingston','Ontario',-76.52215000083994,44.26923999853616),
         ('Mowat Avenue (south side of Johnson)','bus_stop','Kingston','Ontario',-76.52113999981317,44.2303999982261),
         ('Trillium Ridge (west side of Edgar)','bus_stop','Kingston','Ontario',-76.552949999794,44.2504899977623),
         ('McEwen Drive (south side of Henderson)','bus_stop','Kingston','Ontario',-76.57330000035417,44.22820999803548),
