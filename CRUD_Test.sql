@@ -40,9 +40,17 @@ BEGIN TRAN;
         @SubdivisionID = 1,
         @Latitude = 44.2534913,
         @Longitude = -76.5024051,
-        @LocationWKT = NULL,
-        @AmenityID = @AmenityID OUTPUT;
-    
+        @LocationWKT = NULL;
+
+    SELECT TOP (1) @AmenityID = AmenityID
+    FROM dbo.Tbl_Amenities
+    WHERE Name = 'Kingston Secondary School'
+      AND CategoryID = @CategoryID
+      AND Street = '145 Kirkpatrick St'
+      AND City = 'Kingston'
+      AND SubdivisionID = 1
+    ORDER BY AmenityID DESC;
+
     EXEC dbo.sp_Amenity_Read @AmenityID = @AmenityID;
     
     EXEC dbo.sp_Amenity_Update
@@ -63,8 +71,16 @@ BEGIN TRAN;
         @SubdivisionID = 1,
         @Latitude = NULL,
         @Longitude = NULL,
-        @LocationWKT = 'LINESTRING (-76.50240 44.25349, -76.50190 44.25380, -76.50140 44.25410)',
-        @AmenityID = @AmenityID2 OUTPUT;
+        @LocationWKT = 'LINESTRING (-76.50240 44.25349, -76.50190 44.25380, -76.50140 44.25410)';
+
+    SELECT TOP (1) @AmenityID2 = AmenityID
+    FROM dbo.Tbl_Amenities
+    WHERE Name = 'School Walkway'
+      AND CategoryID = @CategoryID
+      AND Street = 'Bath Rd'
+      AND City = 'Kingston'
+      AND SubdivisionID = 1
+    ORDER BY AmenityID DESC;
 
     EXEC dbo.sp_Amenity_Read @AmenityID = @AmenityID2;
 
