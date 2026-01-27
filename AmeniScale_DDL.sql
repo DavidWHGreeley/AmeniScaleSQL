@@ -36,7 +36,7 @@ CREATE TABLE Tbl_Subdivisions (
 CREATE TABLE Tbl_AmenityCategories (
     CategoryID INT PRIMARY KEY IDENTITY(1,1),
     CategoryName NVARCHAR(100) NOT NULL,
-    BaseWeight DECIMAL(5,2),
+    BaseWeight DECIMAL(5,2) NOT NULL DEFAULT 0,
     IsNegative BIT DEFAULT 0
 );
 

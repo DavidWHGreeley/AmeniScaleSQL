@@ -568,3 +568,31 @@ BEGIN
     END CATCH
 END
 GO
+
+CREATE OR ALTER PROCEDURE dbo.sp_Country_Read
+    @CountryID INT = NULL
+AS
+BEGIN
+    IF @CountryID IS NULL
+        SELECT *
+        FROM Tbl_Countries;
+    ELSE
+        SELECT *
+        FROM Tbl_Countries
+        WHERE CountryID = @CountryID;
+END
+GO
+
+CREATE OR ALTER PROCEDURE dbo.sp_Subdivision_Read
+    @SubdivisionID INT = NULL
+AS
+BEGIN
+    IF @SubdivisionID IS NULL
+        SELECT *
+        FROM Tbl_Subdivisions;
+    ELSE
+        SELECT *
+        FROM Tbl_Subdivisions
+        WHERE SubdivisionID = @SubdivisionID;
+END
+GO
