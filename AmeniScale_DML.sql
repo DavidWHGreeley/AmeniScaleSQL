@@ -4,8 +4,9 @@ Coder: Greeley
 Date: 2026-01-12
 
 vers     Date                    Coder			Issue
-1.0      2026-01-12              Greeley		Initial restaurants
-1.1      2026-01-22              Patrick        Inserted a list of data. 
+0.1      2026-01-12              Greeley		Initial restaurants
+0.2      2026-01-22              Patrick        Inserted a list of data. 
+0.3      2026-01-31              Greeley        Remove Null Names on insert.
 */
 
 USE master
@@ -619,7 +620,7 @@ BEGIN TRY
         ('convenience','Sun Convenience',NULL,NULL,NULL,'Ontario','Kingston',-76.4836271,44.2567879),
         ('supermarket','Patel Indian',NULL,NULL,NULL,'Ontario','Kingston',-76.5312041,44.2498779),
         ('grocery','K Asian Supermarket','274','Princess Street',NULL,'Ontario','Kingston',-76.4881509,44.232348),
-        ('health_food','Green Door Vitamins',NULL,NULL,NULL,'Ontario','Kingston',-76.482133,44.2318559)
+        ('health_food','Green Door Vitamins',NULL,NULL,NULL,'Ontario','Kingston',-76.482133,44.2318559);
 
     INSERT INTO @srcAmenities (Name, HouseNumber, PostalCode, StreetName, CategoryName, Longitude, Latitude, City, Province)
     VALUES
@@ -723,7 +724,7 @@ BEGIN TRY
         ('Dentistry @ ','529',NULL,'Palace Road','dentist',-76.5141443,44.2396977,'Kingston','Ontario'),
         ('Passport Health  Travel Clinic','797','K7L 1G1','Princess Street','clinic',-76.5071774,44.2395263,'Kingston','Ontario'),
         ('Clergy Dental Clinic',NULL,NULL,NULL,'dentist',-76.4887833,44.2328947,'Kingston','Ontario'),
-        ('Dawson Dental',NULL,NULL,NULL,'dentist',-76.4823512,44.2323519,'Kingston','Ontario')
+        ('Dawson Dental',NULL,NULL,NULL,'dentist',-76.4823512,44.2323519,'Kingston','Ontario');
 
 
     INSERT INTO @srcAmenities (Longitude, Latitude, Name, City, HouseNumber, StreetName, CategoryName, PostalCode, Province)
@@ -796,7 +797,7 @@ BEGIN TRY
         (-76.4847082,44.2343851,'Aqua Life Swim Academy',NULL,NULL,NULL,'fitness_centre',NULL,'Ontario'),
         (-76.4795732,44.2313097,'Morro Yoga','Kingston','27','Princess Street','fitness_centre','K7L 1A3','Ontario'),
         (-76.4903877,44.233595,'Studio 330','Kingston','339','Barrie Street','fitness_centre','K7K 3S7','Ontario'),
-        (-76.4883957,44.2331467,'Queen Street Fitness','Kingston','226','Queen Street','fitness_centre',NULL,'Ontario')
+        (-76.4883957,44.2331467,'Queen Street Fitness','Kingston','226','Queen Street','fitness_centre',NULL,'Ontario');
 
     INSERT INTO @srcAmenities (Longitude, Latitude, Name, City, HouseNumber, PostalCode, Province, StreetName, CategoryName)
     VALUES
@@ -1003,7 +1004,7 @@ BEGIN TRY
         (-76.4845563,44.2311335,NULL,'Kingston',NULL,NULL,'Ontario',NULL,'atm'),
         (-76.5691628,44.2601553,'Tesla Supercharger','Kingston',NULL,NULL,'Ontario',NULL,'charging_station'),
         (-76.4675617,44.2303273,'Mail Room','Kingston','15','K7K 5H1','Ontario','Valour Drive','post_office'),
-        (-76.4597174,44.2516865,NULL,'Kingston',NULL,NULL,'Ontario',NULL,'charging_station')
+        (-76.4597174,44.2516865,NULL,'Kingston',NULL,NULL,'Ontario',NULL,'charging_station');
 
     INSERT INTO @srcAmenities (Name, Longitude, Latitude, City, Province, CategoryName)  
     VALUES
@@ -1036,7 +1037,7 @@ BEGIN TRY
         ('KFR FIRE STATION 6',-76.51396905253061,44.23191906581391,'Kingston','Ontario','fire_station'),
         ('KFR FIRE STATION 4',-76.48982444693776,44.23207590497954,'Kingston','Ontario','fire_station'),
         ('KFR FIRE STATION 3',-76.45823357120756,44.2588290698261,'Kingston','Ontario','fire_station'),
-        ('KFR FIRE STATION 10',-76.56980558264502,44.21920071534722,'Kingston','Ontario','fire_station')
+        ('KFR FIRE STATION 10',-76.56980558264502,44.21920071534722,'Kingston','Ontario','fire_station');
 
 
     INSERT INTO @srcAmenities (Name, CategoryName, City, Province, Longitude, Latitude)  
@@ -1838,7 +1839,7 @@ BEGIN TRY
         ('2698 Princess Street (north side)','bus_stop','Kingston','Ontario',-76.57650999976624,44.25881999833123),
         ('Aberfoyle Road (south side of John Counter)','bus_stop','Kingston','Ontario',-76.52192999983359,44.25882999756328),
         ('215 Norman Rogers Drive (west side)','bus_stop','Kingston','Ontario',-76.52289999977907,44.23346999779385),
-        ('Guthrie Drive (south side of Sutherland)','bus_stop','Kingston','Ontario',-76.48488000013803,44.26849999845534)
+        ('Guthrie Drive (south side of Sutherland)','bus_stop','Kingston','Ontario',-76.48488000013803,44.26849999845534);
 
     INSERT INTO @srcAmenities (Name, HouseNumber, StreetName, CategoryName, Longitude, Latitude, Province, City)
     VALUES
@@ -1960,30 +1961,31 @@ BEGIN TRY
         ('WATERFRONT TRAIL COMMODORES COVE Trail Access',NULL,'COMMODORES COVE','trail_access',-76.54073619347572,44.21998707928529,'Ontario','Kingston'),
         ('GREENWOOD PARK TRAIL','400','GORE RD','trail_access',-76.44494792653329,44.26068668562268,'Ontario','Kingston'),
         ('GREENWOOD PARK TRAIL','343','QUARRY POND CRT','trail_access',-76.45604891964055,44.26403180605843,'Ontario','Kingston'),
-        ('K&P CORDUKES RD ACCESS PNT','1980','CORDUKES RD','trail_access',-76.57467186613357,44.29840,'Ontario','Kingston')
+        ('K&P CORDUKES RD ACCESS PNT','1980','CORDUKES RD','trail_access',-76.57467186613357,44.29840,'Ontario','Kingston');
 
 
-    INSERT INTO Tbl_Amenities (Name, CategoryID, Street, City, SubdivisionID, Latitude, Longitude, Location)
-    SELECT
-        s.Name,
-        ac.CategoryID,
-        NULLIF(LTRIM(RTRIM(CONCAT(ISNULL(s.HouseNumber, ''),
-                                 CASE WHEN s.HouseNumber IS NULL OR s.StreetName IS NULL THEN '' ELSE ' ' END,
-                                 ISNULL(s.StreetName, '')))), '') AS Street,
-        s.City,
-        @SubdivisionID AS SubdivisionID,
-        s.Latitude,
-        s.Longitude,
-        geography::Point(s.Latitude, s.Longitude, 4326)
-    FROM @srcAmenities s
-    JOIN Tbl_AmenityCategories ac ON ac.CategoryName = s.CategoryName
-    WHERE NOT EXISTS (
-        SELECT 1
-        FROM Tbl_Amenities a
-        WHERE a.Name = s.Name
-          AND ( (a.Latitude = s.Latitude) OR (a.Latitude IS NULL AND s.Latitude IS NULL) )
-          AND ( (a.Longitude = s.Longitude) OR (a.Longitude IS NULL AND s.Longitude IS NULL) )
-    );
+INSERT INTO Tbl_Amenities (Name, CategoryID, Street, City, SubdivisionID, Latitude, Longitude, Location)
+SELECT
+    s.Name,
+    ac.CategoryID,
+    NULLIF(LTRIM(RTRIM(CONCAT(ISNULL(s.HouseNumber, ''),
+                             CASE WHEN s.HouseNumber IS NULL OR s.StreetName IS NULL THEN '' ELSE ' ' END,
+                             ISNULL(s.StreetName, '')))), '') AS Street,
+    s.City,
+    @SubdivisionID AS SubdivisionID,
+    s.Latitude,
+    s.Longitude,
+    geography::Point(s.Latitude, s.Longitude, 4326)
+FROM @srcAmenities s
+JOIN Tbl_AmenityCategories ac ON ac.CategoryName = s.CategoryName
+WHERE NULLIF(LTRIM(RTRIM(s.Name)), '') IS NOT NULL     -- ✅ skip null/blank names
+  AND NOT EXISTS (
+      SELECT 1
+      FROM Tbl_Amenities a
+      WHERE a.Name = s.Name
+        AND ( (a.Latitude = s.Latitude) OR (a.Latitude IS NULL AND s.Latitude IS NULL) )
+        AND ( (a.Longitude = s.Longitude) OR (a.Longitude IS NULL AND s.Longitude IS NULL) )
+  );
 
     COMMIT TRANSACTION;
 END TRY
