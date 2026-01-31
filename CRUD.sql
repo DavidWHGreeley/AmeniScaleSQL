@@ -182,6 +182,8 @@ AS
 BEGIN
     BEGIN TRY
         BEGIN TRAN;
+        IF NULLIF(LTRIM(RTRIM(@Name)), '') IS NULL
+            THROW 50010, 'Amenity Name is required.', 1;
 
         IF NOT EXISTS (
             SELECT 1
@@ -430,19 +432,33 @@ CREATE OR ALTER PROCEDURE dbo.sp_Location_Create
     @City NVARCHAR(100),
     @SubdivisionID INT,
     @Latitude DECIMAL(10, 8),
-    @Longitude DECIMAL(11, 8),
-    @LocationID INT OUTPUT
+    @Longitude DECIMAL(11, 8)
 AS
 BEGIN
     BEGIN TRY
         BEGIN TRAN;
+        IF NULLIF(LTRIM(RTRIM(@LocationName)), '') IS NULL
+            THROW 50014, 'LocationName is required.', 1;
 
+        IF NULLIF(LTRIM(RTRIM(@StreetNumber)), '') IS NULL
+            THROW 50015, 'StreetNumber is required.', 1;
+
+        IF NULLIF(LTRIM(RTRIM(@Street)), '') IS NULL
+            THROW 50016, 'Street is required.', 1;
+
+        IF NULLIF(LTRIM(RTRIM(@City)), '') IS NULL
+            THROW 50017, 'City is required.', 1;
         IF NOT EXISTS (
             SELECT 1
             FROM Tbl_Subdivisions
             WHERE SubdivisionID = @SubdivisionID
         )
             THROW 50006, 'Invalid SubdivisionID.', 1;
+        IF @Latitude NOT BETWEEN -90 AND 90
+            THROW 50018, 'Latitude must be between -90 and 90.', 1;
+
+        IF @Longitude NOT BETWEEN -180 AND 180
+            THROW 50019, 'Longitude must be between -180 and 180.', 1;
 
         DECLARE @GeogLocation GEOGRAPHY = GEOGRAPHY::Point(@Latitude, @Longitude, 4326);
 
@@ -455,8 +471,7 @@ BEGIN
             @Latitude, @Longitude, @GeogLocation
         );
 
-        SET @LocationID = SCOPE_IDENTITY();
-
+        DECLARE @LocationID INT = CONVERT(INT, SCOPE_IDENTITY());
         COMMIT;
 
         SELECT *, Location.STAsText() AS LocationWKT
@@ -472,20 +487,44 @@ BEGIN
 END
 GO
 
+/*TODO: The AS LocationWKT will need to be changed */
 CREATE OR ALTER PROCEDURE dbo.sp_Location_Read
     @LocationID INT = NULL
 AS
 BEGIN
+    SET NOCOUNT ON;
+
     IF @LocationID IS NULL
-        SELECT *, Location.STAsText() AS LocationWKT
-        FROM Tbl_Locations
-        ORDER BY LocationName;
+        SELECT
+            l.LocationID,
+            l.LocationName,
+            l.StreetNumber,
+            l.Street,
+            l.City,
+            l.SubdivisionID,
+            l.GeometryType,
+            l.Latitude,
+            l.Longitude,
+            l.Location.STAsText() AS LocationWKT
+        FROM Tbl_Locations l
+        ORDER BY l.LocationName;
     ELSE
-        SELECT *, Location.STAsText() AS LocationWKT
-        FROM Tbl_Locations
-        WHERE LocationID = @LocationID;
+        SELECT
+            l.LocationID,
+            l.LocationName,
+            l.StreetNumber,
+            l.Street,
+            l.City,
+            l.SubdivisionID,
+            l.GeometryType,
+            l.Latitude,
+            l.Longitude,
+            l.Location.STAsText() AS LocationWKT
+        FROM Tbl_Locations l
+        WHERE l.LocationID = @LocationID;
 END
 GO
+
 
 CREATE OR ALTER PROCEDURE dbo.sp_Location_Update
     @LocationID INT,

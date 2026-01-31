@@ -110,8 +110,18 @@ BEGIN TRAN;
         @City = 'Kingston',
         @SubdivisionID = 1,
         @Latitude = 44.2315,
-        @Longitude = -76.4950,
-        @LocationID = @LocationID OUTPUT;
+        @Longitude = -76.4950;
+
+    SELECT TOP (1) @LocationID = LocationID
+    FROM dbo.Tbl_Locations
+    WHERE LocationName = 'Frontenac County Schools Museum'
+      AND StreetNumber = '414'
+      AND Street = 'Regent St'
+      AND City = 'Kingston'
+      AND SubdivisionID = 1
+      AND Latitude = 44.2315
+      AND Longitude = -76.4950
+    ORDER BY LocationID DESC;
 
     EXEC dbo.sp_Location_Read @LocationID = @LocationID;
     
@@ -125,5 +135,5 @@ ROLLBACK;
     
 
 
-DBCC CHECKIDENT ('Tbl_Amenities', RESEED, 1828);
+DBCC CHECKIDENT ('Tbl_Amenities', RESEED, 1787);
 GO

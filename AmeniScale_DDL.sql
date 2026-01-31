@@ -4,20 +4,36 @@ Coder: Greeley
 Date: 2026-01-22
 
 vers     Date                    Coder			Issue
-1.0      2026-01-12              Greeley		Initial
-1.1      2026-01-20			     Greeley        Added AmenityCategories, Amenities, Locations, and ScoringResults tables
-1.1      2026-01-22              Greeley        Normalized Address Tables (Strict 3NF)
-1.1      2026-01-26             Patric          Added Checks.
+0.1      2026-01-12              Greeley		Initial
+0.2      2026-01-20			     Greeley        Added AmenityCategories, Amenities, Locations, and ScoringResults tables
+0.3      2026-01-22              Greeley        Normalized Address Tables (Strict 3NF)
+0.4      2026-01-26              Patric         Added Checks.
+0.5      2026-01-31              Greeley        Allow for re-running of code without errors
 */
 
-USE master
+USE master;
 GO
-IF EXISTS(SELECT * FROM sys.databases WHERE name='DB_AmeniScale')
-DROP DATABASE DB_AmeniScale
 
-CREATE DATABASE DB_AmeniScale
+IF EXISTS (SELECT * FROM sys.databases WHERE name = 'DB_AmeniScale')
+BEGIN
+    ALTER DATABASE DB_AmeniScale SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
+    DROP DATABASE DB_AmeniScale;
+END
 GO
-USE DB_AmeniScale
+
+CREATE DATABASE DB_AmeniScale;
+GO
+
+USE DB_AmeniScale;
+GO
+
+IF OBJECT_ID('Tbl_ScoringResults', 'U') IS NOT NULL DROP TABLE Tbl_ScoringResults;
+IF OBJECT_ID('Tbl_Locations', 'U') IS NOT NULL DROP TABLE Tbl_Locations;
+IF OBJECT_ID('Tbl_Amenities', 'U') IS NOT NULL DROP TABLE Tbl_Amenities;
+IF OBJECT_ID('Tbl_AmenityCategories', 'U') IS NOT NULL DROP TABLE Tbl_AmenityCategories;
+IF OBJECT_ID('Tbl_Subdivisions', 'U') IS NOT NULL DROP TABLE Tbl_Subdivisions;
+IF OBJECT_ID('Tbl_Countries', 'U') IS NOT NULL DROP TABLE Tbl_Countries;
+GO
 
 CREATE TABLE Tbl_Countries (
     CountryID INT PRIMARY KEY IDENTITY(1,1),
@@ -42,7 +58,7 @@ CREATE TABLE Tbl_AmenityCategories (
 
 CREATE TABLE Tbl_Amenities (
     AmenityID INT PRIMARY KEY IDENTITY(1,1),
-    Name NVARCHAR(255),
+    Name NVARCHAR(255) NOT NULL,
     CategoryID INT FOREIGN KEY REFERENCES Tbl_AmenityCategories(CategoryID),
     Street NVARCHAR(255),
     City NVARCHAR(100),
