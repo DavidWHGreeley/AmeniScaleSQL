@@ -70,13 +70,15 @@ CREATE TABLE Tbl_Amenities (
     LocationWKT AS (CASE WHEN Location IS NULL THEN NULL ELSE Location.STAsText() END)
 );
 
+-- TODO: Street Number is it's own column. Does it need to be? Can we combine with Street?
+-- Is there any thirdparty API reasons you might want it in it's own column? :D
 CREATE TABLE Tbl_Locations (
     LocationID INT PRIMARY KEY IDENTITY(1,1),
-    LocationName NVARCHAR(100),
-    StreetNumber NVARCHAR(20),
-    Street NVARCHAR(255),
-    City NVARCHAR(100),
-    SubdivisionID INT FOREIGN KEY REFERENCES Tbl_Subdivisions(SubdivisionID),
+    LocationName NVARCHAR(100) NOT NULL,
+    StreetNumber NVARCHAR(20) NOT NULL,
+    Street NVARCHAR(255) NOT NULL,
+    City NVARCHAR(100) NOT NULL,
+    SubdivisionID INT FOREIGN KEY REFERENCES Tbl_Subdivisions(SubdivisionID)  NOT NULL,
     Latitude DECIMAL(10,8),
     Longitude DECIMAL(11,8),
     Location GEOGRAPHY,
