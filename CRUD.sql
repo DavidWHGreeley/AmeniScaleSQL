@@ -8,6 +8,7 @@
  1.1      2026-01-24      Greeley     Put in formatter
  1.2      2026-01-25      Patrick     Added Location Stored Procs, Ran Formatter.
  1.3      2026-01-26      Patrick      Fixed Error code.
+ 1.4      2026-02-07      Greeley     SP for getting items in radius
  */
 
 USE DB_AmeniScale;
@@ -28,6 +29,10 @@ GO
 
 IF OBJECT_ID('dbo.sp_Amenity_Delete', 'P') IS NOT NULL 
     DROP PROCEDURE dbo.sp_Amenity_Delete;
+GO
+
+IF OBJECT_ID('dbo.sp_Amenity_GetInRadius', 'P') IS NOT NULL
+    DROP PROCEDURE dbo.sp_Amenity_GetInRadius;
 GO
 
 
@@ -420,6 +425,39 @@ BEGIN
             ROLLBACK;
         THROW;
     END CATCH
+END
+GO
+
+CREATE OR ALTER PROCEDURE dbo.sp_Amenity_GetInRadius
+    @Latitude DECIMAL(10, 8),
+    @Longitude DECIMAL(11, 8),
+    @SearchRadiusMeters DECIMAL(10, 2)
+AS
+BEGIN
+    
+        -- TODO: Add in any error checking
+       DECLARE @UserLocation GEOGRAPHY = GEOGRAPHY::Point(@Latitude, @Longitude, 4326);
+
+       SELECT 
+        a.AmenityID,
+        a.Name,
+        a.Street,
+        a.City,
+        a.CategoryID,
+        c.CategoryName,
+        a.SubdivisionID,
+        a.Latitude,
+        a.Longitude,
+        a.GeometryType,
+        a.LocationWKT,
+        @UserLocation.STDistance(a.Location) AS DistanceInMeters
+    FROM 
+        Tbl_Amenities a
+        LEFT JOIN Tbl_AmenityCategories c ON a.CategoryID = c.CategoryID
+    WHERE 
+        @UserLocation.STDistance(a.Location) <= @SearchRadiusMeters
+    ORDER BY 
+        DistanceInMeters ASC;
 END
 GO
 

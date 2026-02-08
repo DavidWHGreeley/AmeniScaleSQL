@@ -4,7 +4,9 @@ Coder: Greeley
 Date: 2026-01-23
 
 vers     Date                    Coder			Issue
-1.0      2026-01-23              Greeley		Initial
+0.1      2026-01-23              Greeley		Initial
+0.2      2026-02-07              Greeley        Added 
+
 */
 
 /*
@@ -100,7 +102,12 @@ BEGIN TRAN;
     
     EXEC dbo.sp_AmenityCategory_Read;
     
-    EXEC dbo.sp_Amenity_Read;
+    EXEC dbo.sp_Amenity_Read
+
+    EXEC dbo.sp_Amenity_GetInRadius
+        @Latitude =  44.233334,
+        @Longitude = -76.500000,
+        @SearchRadiusMeters = 1000.00;
 
     PRINT '~~~ LOCATION CRUD ~~~';
     EXEC dbo.sp_Location_Create 
