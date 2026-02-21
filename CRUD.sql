@@ -450,6 +450,7 @@ BEGIN
         a.Longitude,
         a.GeometryType,
         a.LocationWKT,
+        c.IsNegative,
         @UserLocation.STDistance(a.Location) AS DistanceInMeters
     FROM 
         Tbl_Amenities a
