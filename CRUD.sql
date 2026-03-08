@@ -7,8 +7,9 @@
  1.0      2026-01-23      Greeley     Initial
  1.1      2026-01-24      Greeley     Put in formatter
  1.2      2026-01-25      Patrick     Added Location Stored Procs, Ran Formatter.
- 1.3      2026-01-26      Patrick      Fixed Error code.
+ 1.3      2026-01-26      Patrick     Fixed Error code.
  1.4      2026-02-07      Greeley     SP for getting items in radius
+ 1.5      2026-03-02      Patrick     SP for getting items in isochrone polygon
  */
 
 USE DB_AmeniScale;
@@ -461,6 +462,48 @@ BEGIN
         DistanceInMeters ASC;
 END
 GO
+
+
+
+
+
+
+CREATE OR ALTER PROCEDURE dbo.sp_Amenity_GetInIsochrone
+    @PolygonWKT NVARCHAR(MAX)
+AS
+BEGIN
+    
+        -- TODO: Add in any error checking
+       DECLARE @IsochroneArea GEOGRAPHY = GEOGRAPHY::STGeomFromText(@PolygonWKT, 4326);
+
+       SELECT 
+        a.AmenityID,
+        a.Name,
+        a.Street,
+        a.City,
+        a.CategoryID,
+        c.CategoryName,
+        a.SubdivisionID,
+        a.Latitude,
+        a.Longitude,
+        a.GeometryType,
+        a.LocationWKT,
+        c.BaseWeight,
+        c.IsNegative
+    FROM 
+        Tbl_Amenities a
+        LEFT JOIN Tbl_AmenityCategories c ON a.CategoryID = c.CategoryID
+    WHERE 
+        a.Location.STIntersects(@IsochroneArea) = 1
+END
+GO
+
+
+
+
+
+
+
 
 
 
