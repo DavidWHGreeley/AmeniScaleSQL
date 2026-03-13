@@ -74,17 +74,17 @@ CREATE TABLE Tbl_Amenities (
 -- Is there any thirdparty API reasons you might want it in it's own column? :D
 CREATE TABLE Tbl_Locations (
     LocationID INT PRIMARY KEY IDENTITY(1,1),
-    LocationName NVARCHAR(100) NOT NULL,
-    StreetNumber NVARCHAR(20) NOT NULL,
-    Street NVARCHAR(255) NOT NULL,
-    City NVARCHAR(100) NOT NULL,
+    LocationName NVARCHAR(100) NULL,
+    StreetNumber NVARCHAR(20) NULL,
+    Street NVARCHAR(255) NULL,
+    City NVARCHAR(100) NULL,
     SubdivisionID INT FOREIGN KEY REFERENCES Tbl_Subdivisions(SubdivisionID)  NOT NULL,
     Latitude DECIMAL(10,8),
     Longitude DECIMAL(11,8),
     Location GEOGRAPHY,
     GeometryType AS (CASE WHEN Location IS NULL THEN NULL ELSE Location.STGeometryType() END),
     LocationWKT AS (CASE WHEN Location IS NULL THEN NULL ELSE Location.STAsText() END),
-    CalculatedScore DECIMAL(5,2),
+    CalculatedScore DECIMAL(10,2),
     CreatedDate DATETIME DEFAULT GETDATE()
 );
 
@@ -119,7 +119,7 @@ ALTER TABLE Tbl_AmenityCategories
 ADD CONSTRAINT CK_AmenityCategories_BaseWeight CHECK (BaseWeight >= 0);
 
 ALTER TABLE Tbl_Locations
-ADD CONSTRAINT CK_Locations_CalculatedScore CHECK (CalculatedScore BETWEEN 0 AND 100);
+ADD CONSTRAINT CK_Locations_CalculatedScore CHECK (CalculatedScore BETWEEN 0 AND 99999999.99);
 
 ALTER TABLE Tbl_ScoringResults
 ADD CONSTRAINT CK_ScoringResults_Distance CHECK (Distance >= 0);
