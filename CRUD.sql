@@ -514,7 +514,11 @@ CREATE OR ALTER PROCEDURE dbo.sp_Location_Create
     @City NVARCHAR(100),
     @SubdivisionID INT,
     @Latitude DECIMAL(10, 8),
-    @Longitude DECIMAL(11, 8)
+    @Longitude DECIMAL(11, 8),
+    @LocationWKT NVARCHAR(255),
+    @GeometryType NVARCHAR(50),
+    @CalculatedScore FLOAT,
+    @CreatedDate DATETIME
 AS
 BEGIN
     BEGIN TRY
@@ -546,11 +550,11 @@ BEGIN
 
         INSERT INTO Tbl_Locations (
             LocationName, StreetNumber, Street, City, SubdivisionID, 
-            Latitude, Longitude, Location
+            Latitude, Longitude, Location, GeometryType, LocationWKT, CalculatedScore, CreatedDate
         )
         VALUES (
             @LocationName, @StreetNumber, @Street, @City, @SubdivisionID, 
-            @Latitude, @Longitude, @GeogLocation
+            @Latitude, @Longitude, @GeogLocation, @GeometryType, @LocationWKT, @CalculatedScore, @CreatedDate
         );
 
         DECLARE @LocationID INT = CONVERT(INT, SCOPE_IDENTITY());
