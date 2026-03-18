@@ -9,6 +9,7 @@ vers     Date                    Coder			Issue
 0.3      2026-01-22              Greeley        Normalized Address Tables (Strict 3NF)
 0.4      2026-01-26              Patric         Added Checks.
 0.5      2026-01-31              Greeley        Allow for re-running of code without errors
+0.6      2026-03-18              Cody           Added Tbl_ScoredIsochrones
 */
 
 USE master;
@@ -33,6 +34,7 @@ IF OBJECT_ID('Tbl_Amenities', 'U') IS NOT NULL DROP TABLE Tbl_Amenities;
 IF OBJECT_ID('Tbl_AmenityCategories', 'U') IS NOT NULL DROP TABLE Tbl_AmenityCategories;
 IF OBJECT_ID('Tbl_Subdivisions', 'U') IS NOT NULL DROP TABLE Tbl_Subdivisions;
 IF OBJECT_ID('Tbl_Countries', 'U') IS NOT NULL DROP TABLE Tbl_Countries;
+IF OBJECT_ID('Tbl_ScoredIsochrones', 'U') IS NOT NULL DROP TABLE Tbl_ScoredIsochrones;
 GO
 
 CREATE TABLE Tbl_Countries (
@@ -94,6 +96,15 @@ CREATE TABLE Tbl_ScoringResults (
     Distance DECIMAL(10,2),
     ContributionScore DECIMAL(5,2),
     CalculatedDate DATETIME DEFAULT GETDATE()
+);
+GO
+
+CREATE TABLE Tbl_ScoredIsochrones (
+    IsochroneID INT PRIMARY KEY IDENTITY(1,1),
+    LocationID INT FOREIGN KEY REFERENCES Tbl_Locations(LocationID),
+    TravelTime INT, --different rings
+    Polygon GEOMETRY,
+    CreatedAt DATETIME DEFAULT GETDATE()
 );
 GO
 
