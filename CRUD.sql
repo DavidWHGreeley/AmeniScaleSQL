@@ -10,6 +10,7 @@
  1.3      2026-01-26      Patrick     Fixed Error code.
  1.4      2026-02-07      Greeley     SP for getting items in radius
  1.5      2026-03-02      Patrick     SP for getting items in isochrone polygon
+ 1.6      2026-03-18      Cody        SP for inserting created isochrones
  */
 
 USE DB_AmeniScale;
@@ -34,6 +35,10 @@ GO
 
 IF OBJECT_ID('dbo.sp_Amenity_GetInRadius', 'P') IS NOT NULL
     DROP PROCEDURE dbo.sp_Amenity_GetInRadius;
+GO
+
+IF OBJECT_ID('dbo.sp_InsertIsochrone', 'P') IS NOT NULL
+    DROP PROCEDURE dbo.sp_InsertIsochrone;
 GO
 
 
@@ -514,22 +519,13 @@ CREATE OR ALTER PROCEDURE dbo.sp_Location_Create
     @City NVARCHAR(100),
     @SubdivisionID INT,
     @Latitude DECIMAL(10, 8),
-    @Longitude DECIMAL(11, 8)
+    @Longitude DECIMAL(11, 8),
+    @CalculatedScore DECIMAL(10,2)
 AS
 BEGIN
     BEGIN TRY
         BEGIN TRAN;
-        IF NULLIF(LTRIM(RTRIM(@LocationName)), '') IS NULL
-            THROW 50014, 'LocationName is required.', 1;
 
-        IF NULLIF(LTRIM(RTRIM(@StreetNumber)), '') IS NULL
-            THROW 50015, 'StreetNumber is required.', 1;
-
-        IF NULLIF(LTRIM(RTRIM(@Street)), '') IS NULL
-            THROW 50016, 'Street is required.', 1;
-
-        IF NULLIF(LTRIM(RTRIM(@City)), '') IS NULL
-            THROW 50017, 'City is required.', 1;
         IF NOT EXISTS (
             SELECT 1
             FROM Tbl_Subdivisions
@@ -546,11 +542,11 @@ BEGIN
 
         INSERT INTO Tbl_Locations (
             LocationName, StreetNumber, Street, City, SubdivisionID, 
-            Latitude, Longitude, Location
+            Latitude, Longitude, Location, CalculatedScore  
         )
         VALUES (
             @LocationName, @StreetNumber, @Street, @City, @SubdivisionID, 
-            @Latitude, @Longitude, @GeogLocation
+            @Latitude, @Longitude, @GeogLocation, @CalculatedScore
         );
 
         DECLARE @LocationID INT = CONVERT(INT, SCOPE_IDENTITY());
@@ -559,6 +555,8 @@ BEGIN
         SELECT *, Location.STAsText() AS LocationWKT
         FROM Tbl_Locations
         WHERE LocationID = @LocationID;
+
+        SELECT SCOPE_IDENTITY() AS LocationID; --This is to prep to insert the LocationID into Isochrones table
 
     END TRY
     BEGIN CATCH
@@ -715,5 +713,30 @@ BEGIN
         SELECT *
         FROM Tbl_Subdivisions
         WHERE SubdivisionID = @SubdivisionID;
+END
+GO
+
+CREATE OR ALTER PROCEDURE dbo.sp_InsertIsochrone
+    @LocationID INT,
+    @TravelTime INT,
+    @WKT NVARCHAR(MAX)
+AS
+BEGIN
+BEGIN TRY
+        BEGIN TRAN;
+    INSERT INTO Tbl_ScoredIsochrones (
+        LocationID,
+        TravelTime,
+        Polygon)
+        VALUES (
+            @LocationID,
+            @TravelTime,
+            geometry::STGeomFromText(@WKT, 4326));
+END TRY
+    BEGIN CATCH
+        IF @@TRANCOUNT > 0 
+            ROLLBACK;
+        THROW;
+    END CATCH
 END
 GO

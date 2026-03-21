@@ -9,6 +9,7 @@ vers     Date                    Coder			Issue
 0.3      2026-01-22              Greeley        Normalized Address Tables (Strict 3NF)
 0.4      2026-01-26              Patric         Added Checks.
 0.5      2026-01-31              Greeley        Allow for re-running of code without errors
+0.6      2026-03-18              Cody           Added Tbl_ScoredIsochrones
 */
 
 USE master;
@@ -33,6 +34,7 @@ IF OBJECT_ID('Tbl_Amenities', 'U') IS NOT NULL DROP TABLE Tbl_Amenities;
 IF OBJECT_ID('Tbl_AmenityCategories', 'U') IS NOT NULL DROP TABLE Tbl_AmenityCategories;
 IF OBJECT_ID('Tbl_Subdivisions', 'U') IS NOT NULL DROP TABLE Tbl_Subdivisions;
 IF OBJECT_ID('Tbl_Countries', 'U') IS NOT NULL DROP TABLE Tbl_Countries;
+IF OBJECT_ID('Tbl_ScoredIsochrones', 'U') IS NOT NULL DROP TABLE Tbl_ScoredIsochrones;
 GO
 
 CREATE TABLE Tbl_Countries (
@@ -74,17 +76,17 @@ CREATE TABLE Tbl_Amenities (
 -- Is there any thirdparty API reasons you might want it in it's own column? :D
 CREATE TABLE Tbl_Locations (
     LocationID INT PRIMARY KEY IDENTITY(1,1),
-    LocationName NVARCHAR(100) NOT NULL,
-    StreetNumber NVARCHAR(20) NOT NULL,
-    Street NVARCHAR(255) NOT NULL,
-    City NVARCHAR(100) NOT NULL,
+    LocationName NVARCHAR(100) NULL,
+    StreetNumber NVARCHAR(20) NULL,
+    Street NVARCHAR(255) NULL,
+    City NVARCHAR(100) NULL,
     SubdivisionID INT FOREIGN KEY REFERENCES Tbl_Subdivisions(SubdivisionID)  NOT NULL,
     Latitude DECIMAL(10,8),
     Longitude DECIMAL(11,8),
     Location GEOGRAPHY,
     GeometryType AS (CASE WHEN Location IS NULL THEN NULL ELSE Location.STGeometryType() END),
     LocationWKT AS (CASE WHEN Location IS NULL THEN NULL ELSE Location.STAsText() END),
-    CalculatedScore DECIMAL(5,2),
+    CalculatedScore DECIMAL(10,2),
     CreatedDate DATETIME DEFAULT GETDATE()
 );
 
@@ -94,6 +96,15 @@ CREATE TABLE Tbl_ScoringResults (
     Distance DECIMAL(10,2),
     ContributionScore DECIMAL(5,2),
     CalculatedDate DATETIME DEFAULT GETDATE()
+);
+GO
+
+CREATE TABLE Tbl_ScoredIsochrones (
+    IsochroneID INT PRIMARY KEY IDENTITY(1,1),
+    LocationID INT FOREIGN KEY REFERENCES Tbl_Locations(LocationID),
+    TravelTime INT, --different rings
+    Polygon GEOMETRY,
+    CreatedAt DATETIME DEFAULT GETDATE()
 );
 GO
 
@@ -119,7 +130,7 @@ ALTER TABLE Tbl_AmenityCategories
 ADD CONSTRAINT CK_AmenityCategories_BaseWeight CHECK (BaseWeight >= 0);
 
 ALTER TABLE Tbl_Locations
-ADD CONSTRAINT CK_Locations_CalculatedScore CHECK (CalculatedScore BETWEEN 0 AND 100);
+ADD CONSTRAINT CK_Locations_CalculatedScore CHECK (CalculatedScore BETWEEN 0 AND 99999999.99);
 
 ALTER TABLE Tbl_ScoringResults
 ADD CONSTRAINT CK_ScoringResults_Distance CHECK (Distance >= 0);

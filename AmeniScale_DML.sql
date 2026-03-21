@@ -7,6 +7,7 @@ vers     Date                    Coder			Issue
 0.1      2026-01-12              Greeley		Initial restaurants
 0.2      2026-01-22              Patrick        Inserted a list of data. 
 0.3      2026-01-31              Greeley        Remove Null Names on insert.
+0.4      2026-03-12              Cody           Added baseweights for positive.
 */
 
 USE master
@@ -44,43 +45,43 @@ BEGIN TRY
 
     INSERT INTO @srcAmenityCategories (CategoryName, BaseWeight, IsNegative)
     VALUES
-        ('restaurant', 0, 0),
-        ('convenience', 0, 0),
-        ('supermarket', 0, 0),
-        ('health_food', 0, 0),
-        ('grocery', 0, 0),
-        ('butcher', 0, 0),
-        ('pharmacy', 0, 0),
-        ('clinic', 0, 0),
-        ('dentist', 0, 0),
-        ('veterinary', 0, 0),
-        ('theatre', 0, 0),
-        ('fitness_centre', 0, 0),
-        ('sports_centre', 0, 0),
-        ('museum', 0, 0),
-        ('historic', 0, 0),
-        ('ice_rink', 0, 0),
-        ('swimming_pool', 0, 0),
-        ('nightclub', 0, 0),
-        ('cinema', 0, 0),
-        ('bowling_alley', 0, 0),
-        ('charging_station', 0, 0),
-        ('post_office', 0, 0),
-        ('atm', 0, 0),
-        ('place_of_worship', 0, 0),
-        ('fuel', 0, 0),
-        ('car_wash', 0, 0),
-        ('bank', 0, 0),
-        ('ambulance_station', 0, 0),
-        ('hospital', 0, 0),
-        ('police_station', 0, 0),
-        ('gov_centre', 0, 0),
-        ('water_treatment', 0, 0),
-        ('fire_station', 0, 0),
-        ('bus_stop', 0, 0),
-        ('parking_lot', 0, 0),
-        ('library', 0, 0),
-        ('trail_access', 0, 0);
+        ('restaurant', 6, 0),
+        ('convenience', 5, 0),
+        ('supermarket', 9, 0),
+        ('health_food', 2, 0),
+        ('grocery', 9, 0),
+        ('butcher', 4, 0),
+        ('pharmacy', 5, 0),
+        ('clinic', 2, 0),
+        ('dentist', 2, 0),
+        ('veterinary', 2, 0),
+        ('theatre', 3, 0),
+        ('fitness_centre', 6, 0),
+        ('sports_centre', 6, 0),
+        ('museum', 3, 0),
+        ('historic', 3, 0),
+        ('ice_rink', 6, 0),
+        ('swimming_pool', 6, 0),
+        ('nightclub', 6, 0),
+        ('cinema', 3, 0),
+        ('bowling_alley', 3, 0),
+        ('charging_station', 4, 0),
+        ('post_office', 4, 0),
+        ('atm', 5, 0),
+        ('place_of_worship', 5, 0),
+        ('fuel', 7, 0),
+        ('car_wash', 1, 0),
+        ('bank', 5, 0),
+        ('ambulance_station', 5, 0),
+        ('hospital', 2, 0),
+        ('police_station', 7, 0),
+        ('gov_centre', 9, 0),
+        ('water_treatment', 1, 0),
+        ('fire_station', 2, 0),
+        ('bus_stop', 8, 0),
+        ('parking_lot', 4, 0),
+        ('library', 3, 0),
+        ('trail_access', 4, 0);
         
 
     INSERT INTO Tbl_AmenityCategories (CategoryName, BaseWeight, IsNegative)
