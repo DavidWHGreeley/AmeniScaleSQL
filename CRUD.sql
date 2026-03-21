@@ -716,25 +716,33 @@ BEGIN
 END
 GO
 
+/* TODO: Last sprint needs to implement this as well as a Read SP*/
 CREATE OR ALTER PROCEDURE dbo.sp_InsertIsochrone
     @LocationID INT,
     @TravelTime INT,
     @WKT NVARCHAR(MAX)
 AS
 BEGIN
-BEGIN TRY
+    SET NOCOUNT ON;
+
+    BEGIN TRY
         BEGIN TRAN;
-    INSERT INTO Tbl_ScoredIsochrones (
-        LocationID,
-        TravelTime,
-        Polygon)
+
+        INSERT INTO Tbl_ScoredIsochrones (
+            LocationID,
+            TravelTime,
+            Polygon
+        )
         VALUES (
             @LocationID,
             @TravelTime,
-            geometry::STGeomFromText(@WKT, 4326));
-END TRY
+            geometry::STGeomFromText(@WKT, 4326)
+        );
+
+        COMMIT TRAN;
+    END TRY
     BEGIN CATCH
-        IF @@TRANCOUNT > 0 
+        IF @@TRANCOUNT > 0
             ROLLBACK;
         THROW;
     END CATCH
