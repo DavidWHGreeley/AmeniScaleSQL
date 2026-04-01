@@ -748,3 +748,140 @@ BEGIN
     END CATCH
 END
 GO
+
+
+CREATE OR ALTER PROCEDURE dbo.sp_GetTheoreticalMaxScore
+AS
+BEGIN
+    SET NOCOUNT ON;
+    BEGIN TRY
+
+        SELECT 
+            SUM(ac.BaseWeight) AS TheoreticalMax
+        FROM 
+            Tbl_Amenities a
+            INNER JOIN Tbl_AmenityCategories ac ON a.CategoryID = ac.CategoryID
+        WHERE 
+            ac.IsNegative = 0;
+
+    END TRY
+    BEGIN CATCH
+        THROW;
+    END CATCH
+END
+GO
+
+CREATE OR ALTER PROCEDURE dbo.sp_User_Create
+    @DisplayName NVARCHAR(255)
+AS
+BEGIN
+    INSERT INTO Tbl_Users (DisplayName)
+    Values(@DisplayName);
+
+    SELECT UserID, DisplayName, CreatedDate
+    from Tbl_Users
+    WHERE UserID = SCOPE_IDENTITY();
+END
+GO
+
+CREATE OR ALTER PROCEDURE dbo.sp_Battle_Create
+    @UserID INT,
+    @ExpiresAt DATETIME
+AS
+BEGIN
+    BEGIN TRY
+        BEGIN TRAN;
+
+        IF NOT EXISTS (SELECT 1 FROM Tbl_Users WHERE UserID = @UserID)
+            THROW 50020, 'UserID not found.', 1;
+        
+         IF @ExpiresAt <= GETDATE()
+            THROW 50021, 'ExpiresAt must be in future.', 1;
+
+        DECLARE @BattleCode UNIQUEIDENTIFIER = NEWID();
+
+        INSERT INTO Tbl_Battles (BattleCode, CreatedByUserID, ExpiresAt)
+        VALUES (@BattleCode, @UserID, @ExpiresAt);
+
+        SELECT BattleID, BattleCode, ExpiresAt, Status
+        FROM Tbl_Battles 
+        WHERE BattleCode = @BattleCode;
+
+        COMMIT;
+    END TRY
+    BEGIN CATCH
+        IF @@TRANCOUNT > 0 ROLLBACK;
+        THROW;
+    END CATCH
+END
+GO
+
+CREATE OR ALTER PROCEDURE dbo.sp_Battle_GetByCode
+    @BattleCode UNIQUEIDENTIFIER
+AS
+BEGIN
+    SELECT BattleID, BattleCode, CreatedByUserID, ExpiresAt, Status
+    FROM Tbl_Battles
+    WHERE BattleCode = @BattleCode;
+END
+GO
+
+CREATE OR ALTER PROCEDURE dbo.sp_Battle_Join
+    @BattleCode UNIQUEIDENTIFIER,
+    @UserID     INT,
+    @LocationID INT
+AS
+BEGIN
+    BEGIN TRY
+        BEGIN TRAN;
+
+        DECLARE @BattleID INT, @Status NVARCHAR(20), @ExpiresAt DATETIME;
+
+        SELECT @BattleID = BattleID, @Status = Status, @ExpiresAt = ExpiresAt
+        FROM Tbl_Battles 
+        WHERE BattleCode = @BattleCode;
+
+        IF @BattleID IS NULL    THROW 50022, 'Battle not found', 1;
+        IF @Status <> 'open'    THROW 50023, 'Battle is not open', 1;
+        IF @ExpiresAt < GETDATE() THROW 50024, 'Battle has expired', 1;
+
+        IF EXISTS (
+            SELECT 1 FROM Tbl_BattleParticipants 
+            WHERE BattleID = @BattleID AND UserID = @UserID
+        )
+            THROW 50026, 'User already submitted for this battle', 1;
+
+        INSERT INTO Tbl_BattleParticipants (BattleID, UserID, LocationID)
+        VALUES (@BattleID, @UserID, @LocationID);
+
+        COMMIT;
+
+        EXEC dbo.sp_Battle_Leaderboard @BattleCode = @BattleCode;
+
+    END TRY
+    BEGIN CATCH
+        IF @@TRANCOUNT > 0 ROLLBACK;
+        THROW;
+    END CATCH
+END
+GO
+
+CREATE OR ALTER PROCEDURE dbo.sp_Battle_Leaderboard
+    @BattleCode UNIQUEIDENTIFIER
+AS
+BEGIN
+    SELECT
+        u.DisplayName,
+        l.LocationName,
+        l.CalculatedScore AS Score,
+        bp.JoinedDate,
+        l.Latitude,
+        l.Longitude
+    FROM Tbl_BattleParticipants bp
+    JOIN Tbl_Battles   b ON b.BattleID   = bp.BattleID
+    JOIN Tbl_Users     u ON u.UserID     = bp.UserID
+    JOIN Tbl_Locations l ON l.LocationID = bp.LocationID
+    WHERE b.BattleCode = @BattleCode
+    ORDER BY l.CalculatedScore DESC;
+END
+GO

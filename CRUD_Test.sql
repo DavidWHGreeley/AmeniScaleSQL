@@ -117,7 +117,8 @@ BEGIN TRAN;
         @City = 'Kingston',
         @SubdivisionID = 1,
         @Latitude = 44.2315,
-        @Longitude = -76.4950;
+        @Longitude = -76.4950,
+        @CalculatedScore = 500.00;
 
     SELECT TOP (1) @LocationID = LocationID
     FROM dbo.Tbl_Locations
@@ -128,6 +129,7 @@ BEGIN TRAN;
       AND SubdivisionID = 1
       AND Latitude = 44.2315
       AND Longitude = -76.4950
+      AND CalculatedScore = 500.00
     ORDER BY LocationID DESC;
 
     EXEC dbo.sp_Location_Read @LocationID = @LocationID;

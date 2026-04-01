@@ -108,6 +108,36 @@ CREATE TABLE Tbl_ScoredIsochrones (
 );
 GO
 
+CREATE TABLE Tbl_Users (
+    UserID      INT PRIMARY KEY IDENTITY(1,1),
+    DisplayName NVARCHAR(100) NOT NULL,
+    CreatedDate DATETIME DEFAULT GETDATE()
+);
+
+CREATE TABLE Tbl_Battles (
+    BattleID INT PRIMARY KEY IDENTITY(1,1),
+    BattleCode UNIQUEIDENTIFIER NOT NULL DEFAULT NEWID(),
+    CreatedByUserID INT FOREIGN KEY REFERENCES Tbl_Users(UserID),
+    CreatedDate DATETIME DEFAULT GETDATE(),
+    ExpiresAt DATETIME NOT NULL,
+    Status NVARCHAR(20) NOT NULL DEFAULT 'open'
+        CONSTRAINT CK_Battles_Status CHECK (Status IN ('open', 'closed', 'expired')),
+    MaxParticipants INT NULL
+);
+
+CREATE TABLE Tbl_BattleParticipants (
+    ParticipantID INT PRIMARY KEY IDENTITY(1,1),
+    BattleID INT NOT NULL FOREIGN KEY REFERENCES Tbl_Battles(BattleID),
+    UserID INT NOT NULL FOREIGN KEY REFERENCES Tbl_Users(UserID),
+    LocationID INT NOT NULL FOREIGN KEY REFERENCES Tbl_Locations(LocationID),
+    JoinedDate DATETIME DEFAULT GETDATE(),
+    CONSTRAINT UQ_BattleParticipants_BattleUser UNIQUE (BattleID, UserID)
+);
+
+ALTER TABLE Tbl_Battles
+ADD CONSTRAINT UQ_Battles_BattleCode UNIQUE (BattleCode);
+
+
 ALTER TABLE Tbl_Amenities
 ADD CONSTRAINT CK_Amenities_Latitude CHECK (Latitude BETWEEN -90 AND 90);
 
