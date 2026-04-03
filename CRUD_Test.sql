@@ -140,6 +140,8 @@ BEGIN TRAN;
 
     EXEC dbo.sp_Location_Read @LocationID = @LocationID;
 
+    EXEC dbo.sp_GetTheoreticalMaxScore;
+
 ROLLBACK;
     
 
