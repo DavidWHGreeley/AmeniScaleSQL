@@ -107,6 +107,10 @@ IF OBJECT_ID('dbo.sp_Battle_Join', 'P') IS NOT NULL
 	DROP PROCEDURE dbo.sp_Battle_Join;
 GO
 
+IF OBJECT_ID('dbo.sp_Battle_GetByUser', 'P') IS NOT NULL
+	DROP PROCEDURE dbo.sp_Battle_GetByUser;
+GO
+
 CREATE PROCEDURE dbo.sp_AmenityCategory_Create @CategoryName NVARCHAR(100),
 	@BaseWeight DECIMAL(5, 2) = NULL,
 	@IsNegative BIT = 0,
@@ -999,6 +1003,18 @@ BEGIN
 
 		THROW;
 	END CATCH
+END
+GO
+
+CREATE PROCEDURE dbo.sp_Battle_GetByUser
+    @UserID INT
+AS
+BEGIN
+    SELECT b.BattleID, b.BattleCode, b.CreatedDate, b.ExpiresAt, b.Status
+    FROM Tbl_Battles b
+    JOIN Tbl_BattleParticipants bp ON bp.BattleID = b.BattleID
+    WHERE bp.UserID = @UserID
+    ORDER BY b.CreatedDate DESC;
 END
 GO
 
