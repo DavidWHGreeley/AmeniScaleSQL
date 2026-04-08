@@ -28,6 +28,8 @@ GO
 USE DB_AmeniScale;
 GO
 
+IF OBJECT_ID('Tbl_BattleParticipants', 'U') IS NOT NULL DROP TABLE Tbl_BattleParticipants;
+IF OBJECT_ID('Tbl_Battles', 'U') IS NOT NULL DROP TABLE Tbl_Battles;
 IF OBJECT_ID('Tbl_ScoringResults', 'U') IS NOT NULL DROP TABLE Tbl_ScoringResults;
 IF OBJECT_ID('Tbl_Locations', 'U') IS NOT NULL DROP TABLE Tbl_Locations;
 IF OBJECT_ID('Tbl_Amenities', 'U') IS NOT NULL DROP TABLE Tbl_Amenities;
@@ -35,6 +37,7 @@ IF OBJECT_ID('Tbl_AmenityCategories', 'U') IS NOT NULL DROP TABLE Tbl_AmenityCat
 IF OBJECT_ID('Tbl_Subdivisions', 'U') IS NOT NULL DROP TABLE Tbl_Subdivisions;
 IF OBJECT_ID('Tbl_Countries', 'U') IS NOT NULL DROP TABLE Tbl_Countries;
 IF OBJECT_ID('Tbl_ScoredIsochrones', 'U') IS NOT NULL DROP TABLE Tbl_ScoredIsochrones;
+IF OBJECT_ID('Tbl_Users', 'U') IS NOT NULL DROP TABLE Tbl_Users;
 GO
 
 CREATE TABLE Tbl_Countries (
@@ -97,7 +100,7 @@ CREATE TABLE Tbl_ScoringResults (
     ContributionScore DECIMAL(5,2),
     CalculatedDate DATETIME DEFAULT GETDATE()
 );
-GO
+
 
 CREATE TABLE Tbl_ScoredIsochrones (
     IsochroneID INT PRIMARY KEY IDENTITY(1,1),
@@ -106,7 +109,36 @@ CREATE TABLE Tbl_ScoredIsochrones (
     Polygon GEOMETRY,
     CreatedAt DATETIME DEFAULT GETDATE()
 );
-GO
+
+
+CREATE TABLE Tbl_Users (
+    UserID      INT PRIMARY KEY IDENTITY(1,1),
+    DisplayName NVARCHAR(100) NOT NULL,
+    CreatedDate DATETIME DEFAULT GETDATE()
+);
+
+
+CREATE TABLE Tbl_Battles (
+    BattleID INT PRIMARY KEY IDENTITY(1,1),
+    BattleCode UNIQUEIDENTIFIER NOT NULL DEFAULT NEWID(),
+    CreatedByUserID INT FOREIGN KEY REFERENCES Tbl_Users(UserID),
+    CreatedDate DATETIME DEFAULT GETDATE(),
+    ExpiresAt DATETIME NOT NULL,
+    Status NVARCHAR(20) NOT NULL DEFAULT 'open'
+        CONSTRAINT CK_Battles_Status CHECK (Status IN ('open', 'closed', 'expired')),
+    MaxParticipants INT NULL
+);
+
+
+CREATE TABLE Tbl_BattleParticipants (
+    ParticipantID INT PRIMARY KEY IDENTITY(1,1),
+    BattleID INT NOT NULL FOREIGN KEY REFERENCES Tbl_Battles(BattleID),
+    UserID INT NOT NULL FOREIGN KEY REFERENCES Tbl_Users(UserID),
+    LocationID INT NOT NULL FOREIGN KEY REFERENCES Tbl_Locations(LocationID),
+    JoinedDate DATETIME DEFAULT GETDATE(),
+    CONSTRAINT UQ_BattleParticipants_BattleUser UNIQUE (BattleID, UserID)
+);
+
 
 ALTER TABLE Tbl_Amenities
 ADD CONSTRAINT CK_Amenities_Latitude CHECK (Latitude BETWEEN -90 AND 90);
