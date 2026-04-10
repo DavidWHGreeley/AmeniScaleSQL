@@ -870,6 +870,7 @@ CREATE PROCEDURE dbo.sp_Battle_Leaderboard @BattleCode UNIQUEIDENTIFIER
 AS
 BEGIN
 	SELECT u.DisplayName,
+		bp.UserID,
 		l.LocationName,
 		l.CalculatedScore AS Score,
 		bp.JoinedDate,
