@@ -111,6 +111,10 @@ IF OBJECT_ID('dbo.sp_Battle_GetByUser', 'P') IS NOT NULL
 	DROP PROCEDURE dbo.sp_Battle_GetByUser;
 GO
 
+IF OBJECT_ID('dbo.sp_Battle_GetAll', 'P') IS NOT NULL
+	DROP PROCEDURE dbo.sp_Battle_GetAll;
+GO
+
 CREATE PROCEDURE dbo.sp_AmenityCategory_Create @CategoryName NVARCHAR(100),
 	@BaseWeight DECIMAL(5, 2) = NULL,
 	@IsNegative BIT = 0,
@@ -663,6 +667,7 @@ BEGIN
 			l.GeometryType,
 			l.Latitude,
 			l.Longitude,
+            l.CalculatedScore,
 			l.Location.STAsText() AS LocationWKT
 		FROM Tbl_Locations l
 		ORDER BY l.LocationName;
@@ -676,6 +681,7 @@ BEGIN
 			l.GeometryType,
 			l.Latitude,
 			l.Longitude,
+            l.CalculatedScore,
 			l.Location.STAsText() AS LocationWKT
 		FROM Tbl_Locations l
 		WHERE l.LocationID = @LocationID;
@@ -689,7 +695,8 @@ CREATE PROCEDURE dbo.sp_Location_Update @LocationID INT,
 	@City NVARCHAR(100) = NULL,
 	@SubdivisionID INT = NULL,
 	@Latitude DECIMAL(10, 8) = NULL,
-	@Longitude DECIMAL(11, 8) = NULL
+	@Longitude DECIMAL(11, 8) = NULL,
+	@CalculatedScore DECIMAL(10, 2) = NULL
 AS
 BEGIN
 	BEGIN TRY
@@ -716,7 +723,8 @@ BEGIN
 			SubdivisionID = COALESCE(@SubdivisionID, SubdivisionID),
 			Latitude = COALESCE(@Latitude, Latitude),
 			Longitude = COALESCE(@Longitude, Longitude),
-			Location = COALESCE(@NewGeog, Location)
+			Location = COALESCE(@NewGeog, Location),
+		    CalculatedScore = COALESCE(@CalculatedScore, CalculatedScore)
 		WHERE LocationID = @LocationID;
 
 		COMMIT;
@@ -1018,4 +1026,11 @@ BEGIN
     ORDER BY b.CreatedDate DESC;
 END
 GO
+
+CREATE PROCEDURE sp_Battle_GetAll
+AS
+BEGIN
+    SELECT BattleID, BattleCode, ExpiresAt, Status
+    FROM Tbl_Battles
+END
 
