@@ -11,6 +11,8 @@
  1.4      2026-02-07      Greeley     SP for getting items in radius
  1.5      2026-03-02      Patrick     SP for getting items in isochrone polygon
  1.6      2026-03-18      Cody        SP for inserting created isochrones
+ 1.7      2026-04-01      Cody        SP for inserting Reading isochrones
+ 1.8	  2026-04-11	  Greeley	  Location ID for sp_Battle_Leaderboard so we can use isochrones 
  */
 USE DB_AmeniScale;
 GO
@@ -81,6 +83,10 @@ GO
 
 IF OBJECT_ID('dbo.sp_InsertIsochrone', 'P') IS NOT NULL
 	DROP PROCEDURE dbo.sp_InsertIsochrone;
+GO
+
+IF OBJECT_ID('dbo.sp_GetIsochrones', 'P') IS NOT NULL
+	DROP PROCEDURE dbo.sp_GetIsochrones;
 GO
 
 IF OBJECT_ID('dbo.sp_GetTheoreticalMaxScore', 'P') IS NOT NULL
@@ -834,6 +840,23 @@ BEGIN
 END
 GO
 
+CREATE OR ALTER PROCEDURE dbo.sp_GetIsochrones
+    @LocationID INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+    SELECT 
+        IsochroneID,
+        LocationID,
+        TravelTime,
+        Polygon.STAsText() AS PolygonWKT,
+        CreatedAt
+    FROM Tbl_ScoredIsochrones
+    WHERE LocationID = @LocationID
+    ORDER BY TravelTime ASC;
+END
+GO
+
 CREATE PROCEDURE dbo.sp_GetTheoreticalMaxScore
 AS
 BEGIN
@@ -879,6 +902,7 @@ AS
 BEGIN
 	SELECT u.DisplayName,
 		bp.UserID,
+		 bp.LocationID,
 		l.LocationName,
 		l.CalculatedScore AS Score,
 		bp.JoinedDate,
