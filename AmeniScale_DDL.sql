@@ -7,7 +7,7 @@ vers     Date                    Coder			Issue
 0.1      2026-01-12              Greeley		Initial
 0.2      2026-01-20			     Greeley        Added AmenityCategories, Amenities, Locations, and ScoringResults tables
 0.3      2026-01-22              Greeley        Normalized Address Tables (Strict 3NF)
-0.4      2026-01-26              Patric         Added Checks.
+0.4      2026-01-26              Greeley        Added Checks.
 0.5      2026-01-31              Greeley        Allow for re-running of code without errors
 0.6      2026-03-18              Cody           Added Tbl_ScoredIsochrones
 */
