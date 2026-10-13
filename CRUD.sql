@@ -6,8 +6,8 @@
  vers     Date            Coder       Issue
  1.0      2026-01-23      Greeley     Initial
  1.1      2026-01-24      Greeley     Put in formatter
- 1.2      2026-01-25      Patrick     Added Location Stored Procs, Ran Formatter.
- 1.3      2026-01-26      Patrick     Fixed Error code.
+ 1.2      2026-01-25      Greeley     Added Location Stored Procs, Ran Formatter.
+ 1.3      2026-01-26      Greeley     Fixed Error code.
  1.4      2026-02-07      Greeley     SP for getting items in radius
  1.5      2026-03-02      Patrick     SP for getting items in isochrone polygon
  1.6      2026-03-18      Cody        SP for inserting created isochrones
