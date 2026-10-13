@@ -1979,7 +1979,7 @@ SELECT
     geography::Point(s.Latitude, s.Longitude, 4326)
 FROM @srcAmenities s
 JOIN Tbl_AmenityCategories ac ON ac.CategoryName = s.CategoryName
-WHERE NULLIF(LTRIM(RTRIM(s.Name)), '') IS NOT NULL     -- ✅ skip null/blank names
+WHERE NULLIF(LTRIM(RTRIM(s.Name)), '') IS NOT NULL
   AND NOT EXISTS (
       SELECT 1
       FROM Tbl_Amenities a
